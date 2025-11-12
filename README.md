@@ -1,6 +1,9 @@
-🧠 **Sobre o projeto**
+## 🧠 Sobre o projeto   
+
 Este é um projeto experimental baseado em um sistema de pedidos, escolhido pela sua facilidade em demonstrar os principais contextos do DDD (Domain-Driven Design).
 O objetivo é fixar o conhecimento através da prática, explorando conceitos como Contextos Delimitados, Agregados, Entidades, Objetos de Valor e Serviços de Domínio em um cenário simples e didático.
+
+---
 
 ## 🎯 Introdução ao DDD
 
