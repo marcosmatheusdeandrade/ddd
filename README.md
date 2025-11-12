@@ -394,20 +394,16 @@ public interface Entidade<ID extends Identificador<?>> {
 O que é?
 
 Objeto com identidade única que persiste ao longo do tempo.   
-Dois objetos são iguais se têm o mesmo ID, não pelos atributos
 
 Exemplo no nosso sistema:
 
 ```java
 public class ItemPedido extends Entidade<ItemPedidoId> {
-    private ItemPedidoId id;          // ✅ Identidade única
+    private ItemPedidoId id;          
     private ProdutoId produtoId;
     private String nomeProduto;
     private Quantidade quantidade;
     private Dinheiro precoUnitario;
-
-    // ItemPedido com ID "123" é o MESMO item, 
-    // mesmo que a quantidade mude
 }
 ```
 ---
@@ -417,7 +413,6 @@ public class ItemPedido extends Entidade<ItemPedidoId> {
 ```java
 // compartilhado/dominio/ObjetoValor.
 public interface ObjetoValor {
-    // Marker interface - objetos imutáveis sem identidade
 }
 ```
 
@@ -443,14 +438,12 @@ public class Dinheiro implements ObjetoValor {
         return new Dinheiro(this.valor.add(outro.valor));
     }
 }
-// R$ 10.00 == R$ 10.00 (mesmo valor = objetos iguais)
-
 
 
 @Getter
 @EqualsAndHashCode
 public class Quantidade implements ObjetoValor {
-    private final int valor;  // ✅ Imutável
+    private final int valor;
 
     // Valida na construção
     private Quantidade(int valor) {
@@ -513,8 +506,8 @@ O que é?
 ```java
 public class Pedido extends RaizAgregado<PedidoId> {
 
-    private PedidoId id;                      // ✅ Identidade
-    private List<ItemPedido> itens;          // ✅ Entidades filhas
+    private PedidoId id;                      // Identidade
+    private List<ItemPedido> itens;          // Entidades filhas
     private StatusPedido status;
     private Dinheiro total;
 
