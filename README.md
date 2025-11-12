@@ -1,3 +1,7 @@
+🧠 **Sobre o projeto**
+Este é um projeto experimental baseado em um sistema de pedidos, escolhido pela sua facilidade em demonstrar os principais contextos do DDD (Domain-Driven Design).
+O objetivo é fixar o conhecimento através da prática, explorando conceitos como Contextos Delimitados, Agregados, Entidades, Objetos de Valor e Serviços de Domínio em um cenário simples e didático.
+
 ## 🎯 Introdução ao DDD
 
 **Domain-Driven Design (DDD)** é uma abordagem de desenvolvimento de software que coloca o **domínio de negócio** no centro da aplicação. Não é sobre tecnologia, frameworks ou padrões arquiteturais - é sobre **modelar o conhecimento do negócio em código**.
