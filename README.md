@@ -715,8 +715,8 @@ public class CriarPedido {
     private final ServicoPrecificacao servicoPrecificacao;
     private final ServicoEstoque servicoEstoque;
     private final PublicadorEventos publicadorEventos;
+    private final UnitOfWork unitOfWork;
 
-    @Transactional
     public Pedido executar(CriarPedidoComando comando) {
         // Validações (serviços de domínio)
         servicoDominio.validarNovoPedido(comando.getClienteId());
@@ -744,14 +744,16 @@ public class CriarPedido {
         pedido.aplicarDesconto(desconto);
         pedido.aplicarFrete(frete);
 
-        servicoEstoque.reservarEstoque(pedido);
+        return unitOfWork.execute(() -> {
+            servicoEstoque.reservarEstoque(pedido);
+            
+            Pedido pedidoSalvo = pedidoRepository.salvar(pedido);
 
-        Pedido pedidoSalvo = pedidoRepository.salvar(pedido);
+            pedido.obterEventosNaoPublicados().forEach(publicadorEventos::publicar);
+            pedido.limparEventos();
 
-        pedido.obterEventosNaoPublicados().forEach(publicadorEventos::publicar);
-        pedido.limparEventos();
-
-        return pedidoSalvo;
+            return pedidoSalvo;
+      });
     }
 }
 ```
@@ -895,18 +897,21 @@ Publicação no Use Case:
 public class CriarPedido {
 
     private final PublicadorEventos publicadorEventos;
+    private final UnitOfWork unitOfWork;
 
-    @Transactional
     public Pedido executar(CriarPedidoComando comando) {
         Pedido pedido = Pedido.criar(...);
-        Pedido pedidoSalvo = pedidoRepository.salvar(pedido);
         
-        pedido.obterEventosNaoPublicados()
-              .forEach(publicadorEventos::publicar);
+        return unitOfWork.execute(() -> {
+            Pedido pedidoSalvo = pedidoRepository.salvar(pedido);
+        
+            pedido.obterEventosNaoPublicados()
+                .forEach(publicadorEventos::publicar);
 
-        pedido.limparEventos();
+            pedido.limparEventos();
 
-        return pedidoSalvo;
+            return pedidoSalvo;
+      });
     }
 }
 ```
